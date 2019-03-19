@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_article_major表:文章大学专业表模块 -->
+<mapper namespace="com.bigstudent.dao.BsArticleMajorDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+id,major_subject_name,major_parent_id,major_level ,remark,major_code,major_type,create_time,update_time,is_delete,sort,major_school_type
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = 0
+        <if test="id !=null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="majorSubjectName != null and majorSubjectName != ''">
+            AND major_subject_name = #{majorSubjectName,jdbcType=VARCHAR}
+        </if>
+        <if test="majorParentId != null and majorParentId != ''">
+            AND major_parent_id = #{majorParentId,jdbcType=INTEGER}
+        </if>
+        <if test="majorLevel != null and majorLevel != ''">
+            AND major_level = #{majorLevel,jdbcType=INTEGER}
+        </if>
+        <if test="sort != null ">
+            AND sort = #{sort}
+        </if>
+        <if test="createTime != null ">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null ">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    
+    <insert id="addArticleMajor" parameterType="com.bigstudent.domain.BsArticleMajorDo" keyProperty="id">
+    	<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+    
+        INSERT INTO bs_article_major
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="majorSubjectName != null">        
+	            major_subject_name,
+	        </if>
+	        <if test="majorSchoolType != null">
+                major_school_type,
+	        </if>
+	        <if test="majorParentId != null">
+	            major_parent_id,
+	        </if>
+	        <if test="majorLevel != null">        
+	            major_level,
+	        </if>
+            <if test="majorCode != null and majorCode != ''">
+                major_code,
+            </if>
+            <if test="majorType != null and majorType != ''">
+                major_type,
+            </if>
+            <if test="remark != null and remark != ''">
+                remark,
+            </if>
+            <if test="sort != null ">
+                sort ,
+            </if>
+	            create_time,
+	            update_time,
+        </trim>
+        
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    <if test="majorSubjectName != null" >
+		       #{majorSubjectName,jdbcType=VARCHAR},
+		    </if>
+		    <if test="majorSchoolType != null" >
+		       #{majorSchoolType},
+		    </if>
+		    <if test="majorParentId != null" >
+		       #{majorParentId,jdbcType=INTEGER},
+		    </if>
+		    <if test="majorLevel != null" >
+		       #{majorLevel,jdbcType=INTEGER},
+		    </if>
+            <if test="majorCode != null and majorCode != ''">
+                #{majorCode},
+            </if>
+            <if test="majorType != null and majorType != ''">
+                #{majorType},
+            </if>
+            <if test="remark != null and remark != ''">
+                #{remark},
+            </if>
+            <if test="sort != null ">
+                #{sort},
+            </if>
+		       now(),
+               now(),
+        </trim>
+    </insert>
+    
+    <update id="updateArticleMajor"  parameterType="com.bigstudent.domain.BsArticleMajorDo">
+        UPDATE bs_article_major
+          <set>
+            <if test="majorSubjectName != null and majorSubjectName != '' ">        
+                major_subject_name = #{majorSubjectName,jdbcType=VARCHAR},                
+            </if>
+            <if test="majorSchoolType != null">
+                major_school_type = #{majorSchoolType},
+            </if>
+            <if test="majorParentId != null and majorParentId != '' ">
+                major_parent_id = #{majorParentId,jdbcType=INTEGER},                
+            </if>
+            <if test="majorLevel != null and majorLevel != '' ">        
+                major_level = #{majorLevel,jdbcType=INTEGER},                
+            </if>
+              <if test="remark != null and remark != '' ">
+                  remark = #{remark},
+              </if>
+              <if test="sort != null ">
+                  sort = #{sort},
+              </if>
+              <if test="majorCode != null and majorCode != ''">
+                  major_code = #{majorCode},
+              </if>
+              <if test="majorType != null and majorType != ''">
+                 major_type = #{majorType},
+              </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},                
+            </if>
+              <if test="isDelete != null and isDelete != '' ">
+                  is_delete = #{isDelete,jdbcType=INTEGER},
+              </if>
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsArticleMajorDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article_major
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+	<select id="getByCommonCondition" resultType="com.bigstudent.domain.BsArticleMajorDo" parameterType="com.bigstudent.domain.BsArticleMajorDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article_major
+        <include refid="commonCondition"/> 
+        limit 0,1
+    </select>
+               
+    <select id="getArticleMajorList" resultType="com.bigstudent.domain.BsArticleMajorDo" >
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article_major
+        <include refid="commonCondition"/>
+        order by sort
+    </select>
+    
+</mapper>

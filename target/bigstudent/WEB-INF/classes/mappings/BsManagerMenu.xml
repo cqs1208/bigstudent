@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_manager_menu表:菜单表模块 -->
+<mapper namespace="com.bigstudent.dao.BsManagerMenuDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+id,parent_id,menu_name,create_time,update_time,is_delete
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = 0
+        <if test="id !=null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="parentId != null and parentId != ''">
+            AND parent_id = #{parentId,jdbcType=INTEGER}
+        </if>
+        <if test="menuName != null and menuName != ''">
+            AND menu_name = #{menuName,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    
+    <insert id="saveRecord" parameterType="com.bigstudent.domain.BsManagerMenuDo" keyProperty="id">
+    	<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+    
+        INSERT INTO bs_manager_menu
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="parentId != null">        
+	            parent_id,
+	        </if>
+	        <if test="menuName != null">        
+	            menu_name,
+	        </if>
+	        <if test="createTime != null">        
+	            create_time,
+	        </if>
+	        <if test="updateTime != null">        
+	            update_time,
+	        </if>
+        </trim>
+        
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    <if test="parentId != null" >
+		       #{parentId,jdbcType=INTEGER},
+		    </if>
+		    <if test="menuName != null" >
+		       #{menuName,jdbcType=VARCHAR},
+		    </if>
+		    <if test="createTime != null" >
+		       #{createTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="updateTime != null" >
+		       #{updateTime,jdbcType=TIMESTAMP},
+		    </if>
+        </trim>
+    </insert>
+    
+    <update id="updateById"  parameterType="com.bigstudent.domain.BsManagerMenuDo">
+        UPDATE bs_manager_menu
+          <set>
+            <if test="parentId != null and parentId != '' ">        
+                parent_id = #{parentId,jdbcType=INTEGER},                
+            </if>
+            <if test="menuName != null and menuName != '' ">        
+                menu_name = #{menuName,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null and createTime != '' ">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="updateTime != null and updateTime != '' ">        
+                update_time = #{updateTime,jdbcType=TIMESTAMP},                
+            </if>
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsManagerMenuDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_manager_menu
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+	<select id="getByCommonCondition" resultType="com.bigstudent.domain.BsManagerMenuDo" parameterType="com.bigstudent.domain.BsManagerMenuDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_manager_menu
+        <include refid="commonCondition"/> 
+        limit 0,1
+    </select>
+               
+    <select id="getListByCommonCondition" resultType="com.bigstudent.domain.BsManagerMenuDo" parameterType="com.bigstudent.domain.BsManagerMenuDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_manager_menu
+        <include refid="commonCondition"/>
+    </select>
+    
+</mapper>

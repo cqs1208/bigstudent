@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_manager_user_role表:管理员角色表模块 -->
+<mapper namespace="com.bigstudent.dao.BsManagerUserRoleDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+id,manager_id,role_id,create_time,update_time,is_delete
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = 0
+        <if test="id !=null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="managerId != null and managerId != ''">
+            AND manager_id = #{managerId,jdbcType=VARCHAR}
+        </if>
+        <if test="roleId != null and roleId != ''">
+            AND role_id = #{roleId,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    
+    <insert id="saveRecord" parameterType="com.bigstudent.domain.BsManagerUserRoleDo" keyProperty="id">
+    	<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+    
+        INSERT INTO bs_manager_user_role
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="managerId != null">        
+	            manager_id,
+	        </if>
+	        <if test="roleId != null">        
+	            role_id,
+	        </if>
+	        <if test="createTime != null">        
+	            create_time,
+	        </if>
+	        <if test="updateTime != null">        
+	            update_time,
+	        </if>
+        </trim>
+        
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    <if test="managerId != null" >
+		       #{managerId,jdbcType=VARCHAR},
+		    </if>
+		    <if test="roleId != null" >
+		       #{roleId,jdbcType=INTEGER},
+		    </if>
+		    <if test="createTime != null" >
+		       #{createTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="updateTime != null" >
+		       #{updateTime,jdbcType=TIMESTAMP},
+		    </if>
+        </trim>
+    </insert>
+    
+    <update id="updateById"  parameterType="com.bigstudent.domain.BsManagerUserRoleDo">
+        UPDATE bs_manager_user_role
+          <set>
+            <if test="managerId != null and managerId != '' ">        
+                manager_id = #{managerId,jdbcType=VARCHAR},                
+            </if>
+            <if test="roleId != null and roleId != '' ">        
+                role_id = #{roleId,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null and createTime != '' ">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="updateTime != null and updateTime != '' ">        
+                update_time = #{updateTime,jdbcType=TIMESTAMP},                
+            </if>
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsManagerUserRoleDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_manager_user_role
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+	<select id="getByCommonCondition" resultType="com.bigstudent.domain.BsManagerUserRoleDo" parameterType="com.bigstudent.domain.BsManagerUserRoleDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_manager_user_role
+        <include refid="commonCondition"/> 
+        limit 0,1
+    </select>
+               
+    <select id="getListByCommonCondition" resultType="com.bigstudent.domain.BsManagerUserRoleDo" parameterType="com.bigstudent.domain.BsManagerUserRoleDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_manager_user_role
+        <include refid="commonCondition"/>
+    </select>
+    
+</mapper>

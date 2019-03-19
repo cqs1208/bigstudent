@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_article_place表:文章地区表模块 -->
+<mapper namespace="com.bigstudent.dao.BsArticlePlaceDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+id,province,city,sort,is_hot,create_time,update_time,is_delete
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = 0
+        <if test="id !=null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="province != null and province != ''">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null and city != ''">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="sort != null and sort != ''">
+            AND sort = #{sort,jdbcType=INTEGER}
+        </if>
+        <if test="isHot != null and isHot != ''">
+            AND is_hot = #{isHot,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    
+    <insert id="addArticlePlace" parameterType="com.bigstudent.domain.BsArticlePlaceDo" keyProperty="id">
+    	<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+    
+        INSERT INTO bs_article_place
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="province != null">        
+	            province,
+	        </if>
+	        <if test="city != null">        
+	            city,
+	        </if>
+	        <if test="sort != null">        
+	            sort,
+	        </if>
+	        <if test="isHot != null">        
+	            is_hot,
+	        </if>
+	        <if test="createTime != null">        
+	            create_time,
+	        </if>
+	        <if test="updateTime != null">        
+	            update_time,
+	        </if>
+        </trim>
+        
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    <if test="province != null" >
+		       #{province,jdbcType=VARCHAR},
+		    </if>
+		    <if test="city != null" >
+		       #{city,jdbcType=VARCHAR},
+		    </if>
+		    <if test="sort != null" >
+		       #{sort,jdbcType=INTEGER},
+		    </if>
+		    <if test="isHot != null" >
+		       #{isHot,jdbcType=VARCHAR},
+		    </if>
+		    <if test="createTime != null" >
+		       #{createTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="updateTime != null" >
+		       #{updateTime,jdbcType=TIMESTAMP},
+		    </if>
+        </trim>
+    </insert>
+    
+    <update id="updateArticlePlace"  parameterType="com.bigstudent.domain.BsArticlePlaceDo">
+        UPDATE bs_article_place
+          <set>
+            <if test="province != null and province != '' ">        
+                province = #{province,jdbcType=VARCHAR},                
+            </if>
+            <if test="city != null and city != '' ">        
+                city = #{city,jdbcType=VARCHAR},                
+            </if>
+            <if test="sort != null and sort != '' ">        
+                sort = #{sort,jdbcType=INTEGER},                
+            </if>
+            <if test="isHot != null and isHot != '' ">        
+                is_hot = #{isHot,jdbcType=VARCHAR},                
+            </if>
+                update_time = now(),
+              <if test="isDelete != null and isDelete != '' ">
+                  is_delete = #{isDelete,jdbcType=TIMESTAMP},
+              </if>
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsArticlePlaceDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article_place
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+	<select id="getByCommonCondition" resultType="com.bigstudent.domain.BsArticlePlaceDo" parameterType="com.bigstudent.domain.BsArticlePlaceDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article_place
+        <include refid="commonCondition"/> 
+        limit 0,1
+    </select>
+               
+    <select id="getArticlePlaceList" resultType="com.bigstudent.domain.BsArticlePlaceDo" >
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article_place
+        <include refid="commonCondition"/>
+    </select>
+    
+</mapper>

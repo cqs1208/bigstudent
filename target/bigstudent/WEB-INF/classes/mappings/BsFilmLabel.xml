@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_film_label表:电影标签表模块 -->
+<mapper namespace="com.bigstudent.dao.BsFilmLabelDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+id,label_type,label_name,create_time,update_time,is_delete
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = 0
+        <if test="id !=null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="labelType != null and labelType != ''">
+            AND label_type = #{labelType,jdbcType=VARCHAR}
+        </if>
+        <if test="labelName != null and labelName != ''">
+            AND label_name = #{labelName,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <insert id="addFilmLabel" parameterType="com.bigstudent.domain.BsFilmLabelDo" keyProperty="id">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO bs_film_label
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="labelType != null">
+                label_type,
+            </if>
+            <if test="labelName != null">
+                label_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="labelType != null" >
+                #{labelType,jdbcType=VARCHAR},
+            </if>
+            <if test="labelName != null" >
+                #{labelName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateFilmLabel"  parameterType="com.bigstudent.domain.BsFilmLabelDo">
+        UPDATE bs_film_label
+          <set>
+            <if test="labelType != null and labelType != '' ">
+                label_type = #{labelType,jdbcType=VARCHAR},
+            </if>
+            <if test="labelName != null and labelName != '' ">        
+                label_name = #{labelName,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null and createTime != '' ">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+                update_time = now(),
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsFilmLabelDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_film_label
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+	<select id="getByCommonCondition" resultType="com.bigstudent.domain.BsFilmLabelDo" parameterType="com.bigstudent.domain.BsFilmLabelDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_film_label
+        <include refid="commonCondition"/> 
+        limit 0,1
+    </select>
+               
+    <select id="getFilmLabelList" resultType="com.bigstudent.domain.BsFilmLabelDo" parameterType="com.bigstudent.domain.BsFilmLabelDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_film_label
+        <include refid="commonCondition"/>
+    </select>
+    
+</mapper>

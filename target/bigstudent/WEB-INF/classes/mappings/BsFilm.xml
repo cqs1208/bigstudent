@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_film表:电影表模块 -->
+<mapper namespace="com.bigstudent.dao.BsFilmDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+id,film_name,article_abstract,film_image,film_poster,film_title,film_form,film_place,film_type,film_content,film_original,film_resource_name,film_resource_url,film_browse,film_agree,film_collection,film_comment,film_score,create_time,update_time,is_delete
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = 0
+        <if test="id !=null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="filmName != null and filmName != ''">
+            AND film_name = #{filmName,jdbcType=VARCHAR}
+        </if>
+        <if test="articleAbstract != null and articleAbstract != ''">
+            AND article_abstract = #{articleAbstract,jdbcType=VARCHAR}
+        </if>
+        <if test="filmImage != null and filmImage != ''">
+            AND film_image = #{filmImage,jdbcType=VARCHAR}
+        </if>
+        <if test="filmPoster != null and filmPoster != ''">
+            AND film_poster = #{filmPoster,jdbcType=VARCHAR}
+        </if>
+        <if test="filmTitle != null and filmTitle != ''">
+            AND film_title = #{filmTitle,jdbcType=VARCHAR}
+        </if>
+        <if test="filmForm != null and filmForm != ''">
+            AND film_form = #{filmForm,jdbcType=VARCHAR}
+        </if>
+        <if test="filmPlace != null and filmPlace != ''">
+            AND film_place = #{filmPlace,jdbcType=VARCHAR}
+        </if>
+        <if test="filmType != null and filmType != ''">
+            AND film_type = #{filmType,jdbcType=VARCHAR}
+        </if>
+        <if test="filmContent != null and filmContent != ''">
+            AND film_content = #{filmContent,jdbcType=VARCHAR}
+        </if>
+        <if test="filmOriginal != null and filmOriginal != ''">
+            AND film_original = #{filmOriginal,jdbcType=VARCHAR}
+        </if>
+        <if test="filmResourceName != null and filmResourceName != ''">
+            AND film_resource_name = #{filmResourceName,jdbcType=VARCHAR}
+        </if>
+        <if test="filmResourceUrl != null and filmResourceUrl != ''">
+            AND film_resource_url = #{filmResourceUrl,jdbcType=VARCHAR}
+        </if>
+        <if test="filmBrowse != null and filmBrowse != ''">
+            AND film_browse = #{filmBrowse,jdbcType=INTEGER}
+        </if>
+        <if test="filmAgree != null and filmAgree != ''">
+            AND film_agree = #{filmAgree,jdbcType=INTEGER}
+        </if>
+        <if test="filmCollection != null and filmCollection != ''">
+            AND film_collection = #{filmCollection,jdbcType=INTEGER}
+        </if>
+        <if test="filmComment != null and filmComment != ''">
+            AND film_comment = #{filmComment,jdbcType=INTEGER}
+        </if>
+        <if test="filmScore != null and filmScore != ''">
+            AND film_score = #{filmScore,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    
+    <insert id="saveRecord" parameterType="com.bigstudent.domain.BsFilmDo" keyProperty="id">
+    	<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+    
+        INSERT INTO bs_film
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="filmName != null">        
+	            film_name,
+	        </if>
+	        <if test="articleAbstract != null">        
+	            article_abstract,
+	        </if>
+	        <if test="filmImage != null">        
+	            film_image,
+	        </if>
+	        <if test="filmPoster != null">        
+	            film_poster,
+	        </if>
+	        <if test="filmTitle != null">        
+	            film_title,
+	        </if>
+	        <if test="filmForm != null">        
+	            film_form,
+	        </if>
+	        <if test="filmPlace != null">        
+	            film_place,
+	        </if>
+	        <if test="filmType != null">        
+	            film_type,
+	        </if>
+	        <if test="filmContent != null">        
+	            film_content,
+	        </if>
+	        <if test="filmOriginal != null">        
+	            film_original,
+	        </if>
+	        <if test="filmResourceName != null">        
+	            film_resource_name,
+	        </if>
+	        <if test="filmResourceUrl != null">        
+	            film_resource_url,
+	        </if>
+	        <if test="filmBrowse != null">        
+	            film_browse,
+	        </if>
+	        <if test="filmAgree != null">        
+	            film_agree,
+	        </if>
+	        <if test="filmCollection != null">        
+	            film_collection,
+	        </if>
+	        <if test="filmComment != null">        
+	            film_comment,
+	        </if>
+	        <if test="filmScore != null">        
+	            film_score,
+	        </if>
+	        <if test="createTime != null">        
+	            create_time,
+	        </if>
+	        <if test="updateTime != null">        
+	            update_time,
+	        </if>
+        </trim>
+        
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    <if test="filmName != null" >
+		       #{filmName,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articleAbstract != null" >
+		       #{articleAbstract,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmImage != null" >
+		       #{filmImage,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmPoster != null" >
+		       #{filmPoster,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmTitle != null" >
+		       #{filmTitle,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmForm != null" >
+		       #{filmForm,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmPlace != null" >
+		       #{filmPlace,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmType != null" >
+		       #{filmType,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmContent != null" >
+		       #{filmContent,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmOriginal != null" >
+		       #{filmOriginal,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmResourceName != null" >
+		       #{filmResourceName,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmResourceUrl != null" >
+		       #{filmResourceUrl,jdbcType=VARCHAR},
+		    </if>
+		    <if test="filmBrowse != null" >
+		       #{filmBrowse,jdbcType=INTEGER},
+		    </if>
+		    <if test="filmAgree != null" >
+		       #{filmAgree,jdbcType=INTEGER},
+		    </if>
+		    <if test="filmCollection != null" >
+		       #{filmCollection,jdbcType=INTEGER},
+		    </if>
+		    <if test="filmComment != null" >
+		       #{filmComment,jdbcType=INTEGER},
+		    </if>
+		    <if test="filmScore != null" >
+		       #{filmScore,jdbcType=INTEGER},
+		    </if>
+		    <if test="createTime != null" >
+		       #{createTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="updateTime != null" >
+		       #{updateTime,jdbcType=TIMESTAMP},
+		    </if>
+        </trim>
+    </insert>
+    
+    <update id="updateById"  parameterType="com.bigstudent.domain.BsFilmDo">
+        UPDATE bs_film
+          <set>
+            <if test="filmName != null and filmName != '' ">        
+                film_name = #{filmName,jdbcType=VARCHAR},                
+            </if>
+            <if test="articleAbstract != null and articleAbstract != '' ">        
+                article_abstract = #{articleAbstract,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmImage != null and filmImage != '' ">        
+                film_image = #{filmImage,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmPoster != null and filmPoster != '' ">        
+                film_poster = #{filmPoster,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmTitle != null and filmTitle != '' ">        
+                film_title = #{filmTitle,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmForm != null and filmForm != '' ">        
+                film_form = #{filmForm,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmPlace != null and filmPlace != '' ">        
+                film_place = #{filmPlace,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmType != null and filmType != '' ">        
+                film_type = #{filmType,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmContent != null and filmContent != '' ">        
+                film_content = #{filmContent,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmOriginal != null and filmOriginal != '' ">        
+                film_original = #{filmOriginal,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmResourceName != null and filmResourceName != '' ">        
+                film_resource_name = #{filmResourceName,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmResourceUrl != null and filmResourceUrl != '' ">        
+                film_resource_url = #{filmResourceUrl,jdbcType=VARCHAR},                
+            </if>
+            <if test="filmBrowse != null and filmBrowse != '' ">        
+                film_browse = #{filmBrowse,jdbcType=INTEGER},                
+            </if>
+            <if test="filmAgree != null and filmAgree != '' ">        
+                film_agree = #{filmAgree,jdbcType=INTEGER},                
+            </if>
+            <if test="filmCollection != null and filmCollection != '' ">        
+                film_collection = #{filmCollection,jdbcType=INTEGER},                
+            </if>
+            <if test="filmComment != null and filmComment != '' ">        
+                film_comment = #{filmComment,jdbcType=INTEGER},                
+            </if>
+            <if test="filmScore != null and filmScore != '' ">        
+                film_score = #{filmScore,jdbcType=INTEGER},                
+            </if>
+            <if test="createTime != null and createTime != '' ">        
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="updateTime != null and updateTime != '' ">        
+                update_time = #{updateTime,jdbcType=TIMESTAMP},                
+            </if>
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsFilmDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_film
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+	<select id="getByCommonCondition" resultType="com.bigstudent.domain.BsFilmDo" parameterType="com.bigstudent.domain.BsFilmDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_film
+        <include refid="commonCondition"/> 
+        limit 0,1
+    </select>
+               
+    <select id="getListByCommonCondition" resultType="com.bigstudent.domain.BsFilmDo" parameterType="com.bigstudent.domain.BsFilmDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_film
+        <include refid="commonCondition"/>
+    </select>
+
+
+</mapper>

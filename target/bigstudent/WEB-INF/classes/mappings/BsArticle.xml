@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_article表:文章表模块 -->
+<mapper namespace="com.bigstudent.dao.BsArticleDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+        id,article_title,article_image,article_content,article_label,article_abstract,article_original,
+        article_resource_name,article_resource_url,article_place_id,article_major_id,article_browse,
+        article_agree,article_comment,article_collection,create_time,update_time,is_delete,article_posters, article_shape
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = 0
+        <if test="id !=null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="articleTitle != null and articleTitle != ''">
+            AND article_title = #{articleTitle,jdbcType=VARCHAR}
+        </if>
+        <if test="articleImage != null and articleImage != ''">
+            AND article_image = #{articleImage,jdbcType=VARCHAR}
+        </if>
+        <if test="articleContent != null and articleContent != ''">
+            AND article_content = #{articleContent,jdbcType=VARCHAR}
+        </if>
+        <if test="articleLabel != null and articleLabel != ''">
+            AND article_label = #{articleLabel,jdbcType=VARCHAR}
+        </if>
+        <if test="articleAbstract != null and articleAbstract != ''">
+            AND article_abstract = #{articleAbstract,jdbcType=VARCHAR}
+        </if>
+        <if test="articleOriginal != null and articleOriginal != ''">
+            AND article_original = #{articleOriginal,jdbcType=VARCHAR}
+        </if>
+        <if test="articleResourceName != null and articleResourceName != ''">
+            AND article_resource_name = #{articleResourceName,jdbcType=VARCHAR}
+        </if>
+        <if test="articleResourceUrl != null and articleResourceUrl != ''">
+            AND article_resource_url = #{articleResourceUrl,jdbcType=VARCHAR}
+        </if>
+        <if test="articlePlaceId != null and articlePlaceId != ''">
+            AND article_place_id = #{articlePlaceId,jdbcType=INTEGER}
+        </if>
+        <if test="articleMajorId != null and articleMajorId != ''">
+            AND article_major_id = #{articleMajorId,jdbcType=INTEGER}
+        </if>
+        <if test="articleBrowse != null and articleBrowse != ''">
+            AND article_browse = #{articleBrowse,jdbcType=INTEGER}
+        </if>
+        <if test="articleAgree != null and articleAgree != ''">
+            AND article_agree = #{articleAgree,jdbcType=INTEGER}
+        </if>
+        <if test="articleComment != null and articleComment != ''">
+            AND article_comment = #{articleComment,jdbcType=INTEGER}
+        </if>
+        <if test="articleCollection != null and articleCollection != ''">
+            AND article_collection = #{articleCollection,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="isDelete != null and isDelete != ''">
+            AND is_delete = #{isDelete,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    
+    <insert id="addArticle" parameterType="com.bigstudent.domain.BsArticleDo" keyProperty="id">
+    	<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+    
+        INSERT INTO bs_article
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="articleTitle != null">        
+	            article_title,
+	        </if>
+	        <if test="articleImage != null">        
+	            article_image,
+	        </if>
+	        <if test="articleContent != null">        
+	            article_content,
+	        </if>
+	        <if test="articleLabel != null">        
+	            article_label,
+	        </if>
+	        <if test="articleAbstract != null">        
+	            article_abstract,
+	        </if>
+	        <if test="articleOriginal != null">        
+	            article_original,
+	        </if>
+	        <if test="articleResourceName != null">        
+	            article_resource_name,
+	        </if>
+	        <if test="articleResourceUrl != null">        
+	            article_resource_url,
+	        </if>
+	        <if test="articlePlaceId != null">        
+	            article_place_id,
+	        </if>
+	        <if test="articleMajorId != null">        
+	            article_major_id,
+	        </if>
+	        <if test="articleBrowse != null">        
+	            article_browse,
+	        </if>
+	        <if test="articleAgree != null">        
+	            article_agree,
+	        </if>
+	        <if test="articleComment != null">        
+	            article_comment,
+	        </if>
+	        <if test="articleCollection != null">        
+	            article_collection,
+	        </if>
+	        <if test="createTime != null">        
+	            create_time,
+	        </if>
+	        <if test="updateTime != null">        
+	            update_time,
+	        </if>
+	        <if test="isDelete != null">        
+	            is_delete,
+	        </if>
+
+            <if test="articlePosters != null">
+                article_posters,
+            </if>
+            <if test="articleShape != null">
+                article_shape,
+            </if>
+        </trim>
+        
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    <if test="articleTitle != null" >
+		       #{articleTitle,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articleImage != null" >
+		       #{articleImage,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articleContent != null" >
+		       #{articleContent,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articleLabel != null" >
+		       #{articleLabel,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articleAbstract != null" >
+		       #{articleAbstract,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articleOriginal != null" >
+		       #{articleOriginal,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articleResourceName != null" >
+		       #{articleResourceName,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articleResourceUrl != null" >
+		       #{articleResourceUrl,jdbcType=VARCHAR},
+		    </if>
+		    <if test="articlePlaceId != null" >
+		       #{articlePlaceId,jdbcType=INTEGER},
+		    </if>
+		    <if test="articleMajorId != null" >
+		       #{articleMajorId,jdbcType=INTEGER},
+		    </if>
+		    <if test="articleBrowse != null" >
+		       #{articleBrowse,jdbcType=INTEGER},
+		    </if>
+		    <if test="articleAgree != null" >
+		       #{articleAgree,jdbcType=INTEGER},
+		    </if>
+		    <if test="articleComment != null" >
+		       #{articleComment,jdbcType=INTEGER},
+		    </if>
+		    <if test="articleCollection != null" >
+		       #{articleCollection,jdbcType=INTEGER},
+		    </if>
+		    <if test="createTime != null" >
+		       #{createTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="updateTime != null" >
+		       #{updateTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="isDelete != null" >
+		       #{isDelete,jdbcType=VARCHAR},
+		    </if>
+            <if test="articlePosters != null">
+                #{articlePosters},
+            </if>
+            <if test="articleShape != null">
+                #{articleShape},
+            </if>
+        </trim>
+    </insert>
+    
+    <update id="updateArticle"  parameterType="com.bigstudent.domain.BsArticleDo">
+        UPDATE bs_article
+          <set>
+            <if test="articleTitle != null and articleTitle != '' ">        
+                article_title = #{articleTitle,jdbcType=VARCHAR},                
+            </if>
+            <if test="articleImage != null and articleImage != '' ">        
+                article_image = #{articleImage,jdbcType=VARCHAR},                
+            </if>
+            <if test="articleContent != null and articleContent != '' ">        
+                article_content = #{articleContent,jdbcType=VARCHAR},                
+            </if>
+            <if test="articleLabel != null and articleLabel != '' ">        
+                article_label = #{articleLabel,jdbcType=VARCHAR},                
+            </if>
+            <if test="articleAbstract != null and articleAbstract != '' ">        
+                article_abstract = #{articleAbstract,jdbcType=VARCHAR},                
+            </if>
+            <if test="articleOriginal != null and articleOriginal != '' ">        
+                article_original = #{articleOriginal,jdbcType=VARCHAR},                
+            </if>
+            <if test="articleResourceName != null and articleResourceName != '' ">        
+                article_resource_name = #{articleResourceName,jdbcType=VARCHAR},                
+            </if>
+            <if test="articleResourceUrl != null and articleResourceUrl != '' ">        
+                article_resource_url = #{articleResourceUrl,jdbcType=VARCHAR},                
+            </if>
+            <if test="articlePlaceId != null and articlePlaceId != '' ">        
+                article_place_id = #{articlePlaceId,jdbcType=INTEGER},                
+            </if>
+            <if test="articleMajorId != null and articleMajorId != '' ">        
+                article_major_id = #{articleMajorId,jdbcType=INTEGER},                
+            </if>
+            <if test="articleBrowse != null and articleBrowse != '' ">        
+                article_browse = #{articleBrowse,jdbcType=INTEGER},                
+            </if>
+            <if test="articleAgree != null and articleAgree != '' ">        
+                article_agree = #{articleAgree,jdbcType=INTEGER},                
+            </if>
+            <if test="articleComment != null and articleComment != '' ">        
+                article_comment = #{articleComment,jdbcType=INTEGER},                
+            </if>
+            <if test="articleCollection != null and articleCollection != '' ">        
+                article_collection = #{articleCollection,jdbcType=INTEGER},                
+            </if>                   
+                update_time = now(),    
+            <if test="isDelete != null and isDelete != '' ">        
+                is_delete = #{isDelete,jdbcType=VARCHAR}                
+            </if>
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsArticleDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+	<select id="getByCommonCondition" resultType="com.bigstudent.domain.BsArticleDo" parameterType="com.bigstudent.domain.BsArticleDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article
+        <include refid="commonCondition"/> 
+        limit 0,1
+    </select>
+               
+    <select id="getArticleList" resultType="com.bigstudent.domain.BsArticleDo" parameterType="com.bigstudent.query.ArticleQuery">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_article
+        where is_delete = 0
+    </select>
+    
+</mapper>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_user表:用户表模块 -->
+<mapper namespace="com.bigstudent.dao.BsUserDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+id,user_nick,user_name,password,user_image,sex,user_mail,qq_code,wechat_code,province,city,area,address,create_time,update_time,is_delete
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = '0'
+        <if test="id !=null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="userNick != null and userNick != ''">
+            AND user_nick = #{userNick,jdbcType=VARCHAR}
+        </if>
+        <if test="userName != null and userName != ''">
+            AND user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="password != null and password != ''">
+            AND password = #{password,jdbcType=VARCHAR}
+        </if>
+        <if test="userImage != null and userImage != ''">
+            AND user_image = #{userImage,jdbcType=VARCHAR}
+        </if>
+        <if test="sex != null and sex != ''">
+            AND sex = #{sex,jdbcType=VARCHAR}
+        </if>
+        <if test="userMail != null and userMail != ''">
+            AND user_mail = #{userMail,jdbcType=VARCHAR}
+        </if>
+        <if test="qqCode != null and qqCode != ''">
+            AND qq_code = #{qqCode,jdbcType=VARCHAR}
+        </if>
+        <if test="wechatCode != null and wechatCode != ''">
+            AND wechat_code = #{wechatCode,jdbcType=VARCHAR}
+        </if>
+        <if test="province != null and province != ''">
+            AND province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="city != null and city != ''">
+            AND city = #{city,jdbcType=VARCHAR}
+        </if>
+        <if test="area != null and area != ''">
+            AND area = #{area,jdbcType=VARCHAR}
+        </if>
+        <if test="address != null and address != ''">
+            AND address = #{address,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="isDelete != null and isDelete != ''">
+            AND is_delete = #{isDelete,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    
+    <insert id="addUserInfo" parameterType="com.bigstudent.domain.BsUserDo" keyProperty="id">
+    	<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+    
+        INSERT INTO bs_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="userNick != null">        
+	            user_nick,
+	        </if>
+	        <if test="userName != null">        
+	            user_name,
+	        </if>
+	        <if test="password != null">        
+	            password,
+	        </if>
+	        <if test="userImage != null">        
+	            user_image,
+	        </if>
+	        <if test="sex != null">        
+	            sex,
+	        </if>
+	        <if test="userMail != null">        
+	            user_mail,
+	        </if>
+	        <if test="qqCode != null">        
+	            qq_code,
+	        </if>
+	        <if test="wechatCode != null">        
+	            wechat_code,
+	        </if>
+	        <if test="province != null">        
+	            province,
+	        </if>
+	        <if test="city != null">        
+	            city,
+	        </if>
+	        <if test="area != null">        
+	            area,
+	        </if>
+	        <if test="address != null">        
+	            address,
+	        </if>
+	        <if test="createTime != null">        
+	            create_time,
+	        </if>
+	        <if test="updateTime != null">        
+	            update_time,
+	        </if>
+	        <if test="isDelete != null">
+	            is_delete,
+	        </if>
+        </trim>
+        
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    <if test="userNick != null" >
+		       #{userNick,jdbcType=VARCHAR},
+		    </if>
+		    <if test="userName != null" >
+		       #{userName,jdbcType=VARCHAR},
+		    </if>
+		    <if test="password != null" >
+		       #{password,jdbcType=VARCHAR},
+		    </if>
+		    <if test="userImage != null" >
+		       #{userImage,jdbcType=VARCHAR},
+		    </if>
+		    <if test="sex != null" >
+		       #{sex,jdbcType=VARCHAR},
+		    </if>
+		    <if test="userMail != null" >
+		       #{userMail,jdbcType=VARCHAR},
+		    </if>
+		    <if test="qqCode != null" >
+		       #{qqCode,jdbcType=VARCHAR},
+		    </if>
+		    <if test="wechatCode != null" >
+		       #{wechatCode,jdbcType=VARCHAR},
+		    </if>
+		    <if test="province != null" >
+		       #{province,jdbcType=VARCHAR},
+		    </if>
+		    <if test="city != null" >
+		       #{city,jdbcType=VARCHAR},
+		    </if>
+		    <if test="area != null" >
+		       #{area,jdbcType=VARCHAR},
+		    </if>
+		    <if test="address != null" >
+		       #{address,jdbcType=VARCHAR},
+		    </if>
+		    <if test="createTime != null" >
+		       #{createTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="updateTime != null" >
+		       #{updateTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="isDelete != null" >
+		       #{isDelete,jdbcType=VARCHAR},
+		    </if>
+        </trim>
+    </insert>
+    
+    <update id="updateByUserId"  parameterType="com.bigstudent.domain.BsUserDo">
+        UPDATE bs_user
+          <set>
+            <if test="userNick != null and userNick != '' ">        
+                user_nick = #{userNick,jdbcType=VARCHAR},                
+            </if>
+            <if test="userName != null and userName != '' ">        
+                user_name = #{userName,jdbcType=VARCHAR},                
+            </if>
+            <if test="password != null and password != '' ">        
+                password = #{password,jdbcType=VARCHAR},                
+            </if>
+            <if test="userImage != null and userImage != '' ">        
+                user_image = #{userImage,jdbcType=VARCHAR},                
+            </if>
+            <if test="sex != null and sex != '' ">        
+                sex = #{sex,jdbcType=VARCHAR},                
+            </if>
+            <if test="userMail != null and userMail != '' ">        
+                user_mail = #{userMail,jdbcType=VARCHAR},                
+            </if>
+            <if test="qqCode != null and qqCode != '' ">        
+                qq_code = #{qqCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="wechatCode != null and wechatCode != '' ">        
+                wechat_code = #{wechatCode,jdbcType=VARCHAR},                
+            </if>
+            <if test="province != null and province != '' ">        
+                province = #{province,jdbcType=VARCHAR},                
+            </if>
+            <if test="city != null and city != '' ">        
+                city = #{city,jdbcType=VARCHAR},                
+            </if>
+            <if test="area != null and area != '' ">        
+                area = #{area,jdbcType=VARCHAR},                
+            </if>
+            <if test="address != null and address != '' ">        
+                address = #{address,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null  ">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null  ">
+                update_time = #{updateTime},
+            </if>
+            <if test="isDelete != null and isDelete != '' ">
+                is_delete = #{isDelete,jdbcType=VARCHAR}
+            </if>
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsUserDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_user
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+    <select id="getUserByUserName" resultType="com.bigstudent.domain.BsUserDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_user
+        WHERE is_delete = 0 AND user_name=#{userName}
+        LIMIT 0,1
+    </select>
+
+	<select id="getUserInfo" resultType="com.bigstudent.domain.BsUserDo" parameterType="com.bigstudent.domain.BsUserDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_user
+        <include refid="commonCondition"/> 
+        limit 0,1
+    </select>
+               
+    <select id="getListByCommonCondition" resultType="com.bigstudent.domain.BsUserDo" parameterType="com.bigstudent.domain.BsUserDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_user
+        <include refid="commonCondition"/>
+    </select>
+    
+</mapper>

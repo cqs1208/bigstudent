@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- bs_manager表:管理员表模块 -->
+<mapper namespace="com.bigstudent.dao.BsManagerDao">
+    
+    <!--基本的sql查询字段 公共引用...-->
+    <sql id="queryFields">
+id,manager_name,manager_password,creator_id,create_time,update_time,is_delete
+    </sql>
+    
+    <!-- 基本的sql查询条件公共引用 -->
+    <sql id="commonCondition">
+    	WHERE is_delete = 0
+        <if test="id != null">
+            AND id  = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="managerName != null and managerName != ''">
+            AND manager_name = #{managerName,jdbcType=VARCHAR}
+        </if>
+        <if test="managerPassword != null and managerPassword != ''">
+            AND manager_password = #{managerPassword,jdbcType=VARCHAR}
+        </if>
+        <if test="creatorId != null">
+            AND creator_id = #{creatorId,jdbcType=INTEGER}
+        </if>
+        <if test="createTime != null">
+            AND create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null">
+            AND update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    
+    <insert id="addManager" parameterType="com.bigstudent.domain.BsManagerDo" keyProperty="id">
+    	<selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+    
+        INSERT INTO bs_manager
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+	        <if test="managerName != null">        
+	            manager_name,
+	        </if>
+	        <if test="managerPassword != null">        
+	            manager_password,
+	        </if>
+            <if test="creatorId != null">
+                 creator_id ,
+            </if>
+	        <if test="createTime != null">        
+	            create_time,
+	        </if>
+	        <if test="updateTime != null">        
+	            update_time,
+	        </if>
+        </trim>
+        
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+		    <if test="managerName != null" >
+		       #{managerName,jdbcType=VARCHAR},
+		    </if>
+		    <if test="managerPassword != null" >
+		       #{managerPassword,jdbcType=VARCHAR},
+		    </if>
+            <if test="creatorId != null">
+                #{creatorId,jdbcType=INTEGER},
+            </if>
+		    <if test="createTime != null" >
+		       #{createTime,jdbcType=TIMESTAMP},
+		    </if>
+		    <if test="updateTime != null" >
+		       #{updateTime,jdbcType=TIMESTAMP},
+		    </if>
+        </trim>
+    </insert>
+    
+    <update id="updateManager"  parameterType="com.bigstudent.domain.BsManagerDo">
+        UPDATE bs_manager
+          <set>
+            <if test="managerName != null and managerName != '' ">        
+                manager_name = #{managerName,jdbcType=VARCHAR},                
+            </if>
+            <if test="managerPassword != null and managerPassword != '' ">        
+                manager_password = #{managerPassword,jdbcType=VARCHAR},                
+            </if>
+            <if test="createTime != null  ">
+                create_time = #{createTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="updateTime != null  ">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},                
+            </if>
+            <if test="isDelete != null and isDelete != '' ">
+              is_delete = #{isDelete,jdbcType=CHAR},
+            </if>
+        </set>    
+        WHERE is_delete = 0 AND id = #{id ,jdbcType=BIGINT}
+    </update>
+
+	<select id="getById" resultType="com.bigstudent.domain.BsManagerDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_manager
+        WHERE is_delete = 0 AND id=#{id ,jdbcType=BIGINT}
+        LIMIT 0,1
+    </select>
+
+    <select id="getManagerInfo" resultType="com.bigstudent.domain.BsManagerDo">
+        SELECT
+        <include refid="queryFields" />
+        FROM bs_manager
+        where is_delete = '0'
+        <if test="managerName != null and managerName != ''">
+            AND manager_name = #{managerName,jdbcType=VARCHAR}
+        </if>
+        <if test="managerPassword != null and managerPassword != ''">
+            AND manager_password = #{managerPassword,jdbcType=VARCHAR}
+        </if>
+        LIMIT 0,1
+    </select>
+    
+</mapper>
